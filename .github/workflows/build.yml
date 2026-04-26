@@ -1,0 +1,36 @@
+name: Build Heartove Windows EXE
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install customtkinter psutil pillow pyinstaller
+
+      - name: Convert PNG to ICO
+        run: |
+          python -c "from PIL import Image; img = Image.open('heartove_logo.png'); img.save('heartove_logo.ico')"
+
+      - name: Build EXE
+        run: |
+          pyinstaller --onefile --windowed --name "Heartove" --icon="heartove_logo.ico" heartove_windows.py
+
+      - name: Upload EXE artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Heartove-Windows
+          path: dist/Heartove.exe
