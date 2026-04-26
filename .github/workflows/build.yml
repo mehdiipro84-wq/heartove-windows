@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install customtkinter psutil pillow pyinstaller
+          pip install customtkinter psutil pillow watchdog pyinstaller
 
       - name: Convert PNG to ICO
         run: |
